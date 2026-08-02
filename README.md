@@ -47,7 +47,7 @@ No manual configuration is required after Terraform initialization.
 # Project Structure
 
 ```
-terraform-aws-webserver/
+terraform-aws-lb/
 │
 ├── bootstrap/
 │   ├── main.tf
