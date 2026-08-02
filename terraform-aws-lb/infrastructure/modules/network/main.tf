@@ -10,7 +10,7 @@ data "aws_availability_zones" "available" {
 # VPC
 ###############################################################
 
-resource "aws_vpc" "this" {
+resource "aws_vpc" "main" {
 
   cidr_block           = var.vpc_cidr
   enable_dns_support   = true
@@ -28,9 +28,9 @@ resource "aws_vpc" "this" {
 # Internet Gateway
 ###############################################################
 
-resource "aws_internet_gateway" "this" {
+resource "aws_internet_gateway" "igw" {
 
-  vpc_id = aws_vpc.this.id
+  vpc_id = aws_vpc.main.id
 
   tags = merge(
     var.common_tags,
@@ -48,7 +48,7 @@ resource "aws_subnet" "public" {
 
   count = length(var.public_subnet_cidrs)
 
-  vpc_id = aws_vpc.this.id
+  vpc_id = aws_vpc.main.id
 
   cidr_block = var.public_subnet_cidrs[count.index]
 
@@ -71,13 +71,13 @@ resource "aws_subnet" "public" {
 
 resource "aws_route_table" "public" {
 
-  vpc_id = aws_vpc.this.id
+  vpc_id = aws_vpc.main.id
 
   route {
 
     cidr_block = "0.0.0.0/0"
 
-    gateway_id = aws_internet_gateway.this.id
+    gateway_id = aws_internet_gateway.igw.id
 
   }
 

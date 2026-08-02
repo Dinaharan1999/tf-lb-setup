@@ -2,18 +2,18 @@ output "alb_dns_name" {
 
   description = "ALB DNS Name"
 
-  value = aws_lb.this.dns_name
+  value = aws_lb.alb.dns_name
 
 }
 
 output "alb_arn" {
 
-  value = aws_lb.this.arn
+  value = aws_lb.alb.arn
 
 }
 
 output "target_group_arn" {
 
-  value = aws_lb_target_group.this.arn
+  value = aws_lb_target_group.web.arn
 
 }

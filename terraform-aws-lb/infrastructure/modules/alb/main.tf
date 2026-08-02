@@ -2,7 +2,7 @@
 # Application Load Balancer
 ###############################################################
 
-resource "aws_lb" "this" {
+resource "aws_lb" "alb" {
 
   name               = "${var.project_name}-alb"
 
@@ -31,7 +31,7 @@ resource "aws_lb" "this" {
 # Target Group
 ###############################################################
 
-resource "aws_lb_target_group" "this" {
+resource "aws_lb_target_group" "web" {
 
   name = "${var.project_name}-tg"
 
@@ -76,11 +76,11 @@ resource "aws_lb_target_group" "this" {
 # Register EC2 Instances
 ###############################################################
 
-resource "aws_lb_target_group_attachment" "this" {
+resource "aws_lb_target_group_attachment" "web" {
 
   count = length(var.instance_ids)
 
-  target_group_arn = aws_lb_target_group.this.arn
+  target_group_arn = aws_lb_target_group.web.arn
 
   target_id = var.instance_ids[count.index]
 
@@ -94,7 +94,7 @@ resource "aws_lb_target_group_attachment" "this" {
 
 resource "aws_lb_listener" "http" {
 
-  load_balancer_arn = aws_lb.this.arn
+  load_balancer_arn = aws_lb.alb.arn
 
   port = 80
 
@@ -104,7 +104,7 @@ resource "aws_lb_listener" "http" {
 
     type = "forward"
 
-    target_group_arn = aws_lb_target_group.this.arn
+    target_group_arn = aws_lb_target_group.web.arn
 
   }
 
